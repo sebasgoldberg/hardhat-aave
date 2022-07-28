@@ -1,5 +1,4 @@
 import '@sebasgoldberg/hardhat-network-alias'
-import '@typechain/hardhat'
 import "@nomiclabs/hardhat-ethers";
 
 import { extendConfig, extendEnvironment } from "hardhat/config";
