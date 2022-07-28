@@ -9,7 +9,6 @@ This plug-in it is used to encapsulate operations with the AAVE protocol.
 This plugin will help you with:
 - The AAVE contract interaction, suppling type information based in constracts abis.
 - Simplified interaction with the protocol for all supported networks using hardhat-network-alias.
-- For each model it is possible to generate typechain classes.
 
 ## Installation
 
