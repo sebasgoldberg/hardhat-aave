@@ -1,104 +1,120 @@
-# hardhat-external-plugin
+# hardhat-aave-plugin
 
-This plug-in it is used to add external contract already deployed dependencies to the project.
+This plug-in it is used to encapsulate operations with the AAVE protocol.
 
-[Hardhat](https://hardhat.org) external plugin. 
+[Hardhat](https://hardhat.org) AAVE plugin. 
 
 ## What
 
 This plugin will help you with:
-- For verified contracts it is possible to fetch abi from blockchain explorer and register as a model.
-- Once registered a model, it is possible to register multiple instances (contract addreses) for a model.
+- The AAVE contract interaction, suppling type information based in constracts abis.
+- Simplified interaction with the protocol for all supported networks using hardhat-network-alias.
 - For each model it is possible to generate typechain classes.
 
 ## Installation
 
 ```bash
-npm install @sebasgoldberg/hardhat-external
+npm install @sebasgoldberg/hardhat-aave
 ```
 
 Import the plugin in your `hardhat.config.js`:
 
 ```js
-require("@sebasgoldberg/hardhat-external");
+require("@sebasgoldberg/hardhat-aave");
 ```
 
 Or if you are using TypeScript, in your `hardhat.config.ts`:
 
 ```ts
-import "@sebasgoldberg/hardhat-external";
+import "@sebasgoldberg/hardhat-aave";
 ```
-
-
-## Optional plugins
-
-- [@typechain/hardhat](https://github.com/dethcrypto/TypeChain/tree/master/packages/hardhat)
-
 
 ## Tasks
 
-### external-add-model
-
-In the following example we register the model `BridgeToken` using the abi found in the address `0xd586E7F844cEa2F87f50152665BCbc2C279D8d70`.
-This model is registered in the `test` group (the group is optional).
-Aditionally, at the same time it is registered an instance `BridgeDAIe`, that it is going to use the same address, and the model `BridgeToken`.
-
-`$ npx hardhat external-add-model --address 0xd586E7F844cEa2F87f50152665BCbc2C279D8d70 --group test --instance BridgeDAIe --model BridgeToken`
-
-### external-add-instance
-
-In case we want to register multiple instance with the same model, we use `external-add-instance`.
-
-In the following example we register an instance `BridgeWETHe`, that it is going to use the address `0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB`, and the model `BridgeToken`.
-Note that to be possible to find the `BridgeToken` model, it is necessary to pass the group `test` as a parameter.
-
-`$ npx hardhat external-add-instance --instance BridgeWETHe --model BridgeToken --group test --address 0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB`
-
+There are no tasks for this plugin.
 
 ## Environment extensions
 
-This plugin extends the Hardhat Runtime Environment by adding an `external` field
-whose type is `External`.
+This plugin extends the Hardhat Runtime Environment by adding an `aave` field
+whose type is `AAVE`.
 
-To get the `Contract` instance for both instances registered above, we simply do the following:
+Here is a simple usage example to get the AAVE Pool contract for the selected network:
 
 ``` typescript
-import { BridgeToken } from '../typechain-types'
 // ...
-const BridgeWETHe: BridgeToken = hre.external.getContract('BridgeWETHe', 'test') as BridgeToken
-const BridgeDAIe: BridgeToken = hre.external.getContract('BridgeDAIe', 'test') as BridgeToken
+const pool = await this.hre.aave.getPool()
+// ...
 ```
 
-Note that we are using the specific contract type `BridgeToken` generated using typechain.
+Note that `pool` has the type `Pool` generated using [typechains](https://github.com/dethcrypto/TypeChain).
 
 ## Configuration
 
-The models are created for each network (defined in taks using --network parameter).
+### Network Aliases
 
-In case the models registered for one network are the same for another network, it is possible to specify this with an alias.
+You must configure the `hre.config.networkAliases` key, adding the "aave-plugin" group, 
+and for this group especify for each of your project networks, wich of the 
+hardhat-aave-plugin predifined networks should be mapped.
 
-In the following example, the models are registered for the `hardhat` network, and we want to use the same models for the `localhost` network.
+This is necessary to know wich AAVE's contract addresses should be used for each one of
+your hardhat project networks.
+
+Here is an example of the configuration:
 
 ``` typescript
+import { AVALANCHE_MAINNET_NETWORK } from "@sebasgoldberg/hardhat-aave";
+// ...
+
 const config: HardhatUserConfig = {
-  // ...
-  external:{
-    networkAliases: {
-      'localhost': 'hardhat'
+  //...
+  networkAliases: {
+    "aave-plugin": {
+      'localhost': AVALANCHE_MAINNET_NETWORK,
+      'mainnet': AVALANCHE_MAINNET_NETWORK,
     }
   },
-  // ...
+  //...
+};
+// ...
 ```
 
-Additionally, by default all information related to models and instances are saved in the `external` folder.
+In the example above we are telling that 'mainnet' and 'localhost' networks
+configured in the hardhat project, should use the Avalanche Mainnet contract addresses.
 
-If you need to change the path of this folder you can specify a relative or an absolute path:
+### Custom Network and Address Redefinitions
+
+In case you need to redefine a contract address for a specific network, you can do this
+using the `hre.config.aave.contractAddressByNetwork`.
+
+You can also define addresses for your own network using the `CUSTOM_NETWORK` key.
+
+Here is an example (including networkAliases):
 
 ``` typescript
+import { AVALANCHE_MAINNET_NETWORK, CUSTOM_NETWORK } from "@sebasgoldberg/hardhat-aave";
+// ...
+
 const config: HardhatUserConfig = {
-  // ...
-  external:{
-    path: 'other/location/for/external/plugin'
+  //...
+  aave: {
+    contractAddressByNetwork: {
+      [AVALANCHE_MAINNET_NETWORK]: {
+        PoolAddressesProvider: '0x0123456789012345678901234567890123456789'
+      },
+      [CUSTOM_NETWORK]: {
+        PoolAddressesProvider: '0xABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCD'
+      }
+    },
   },
-  // ...
+  //...
+  networkAliases: {
+    "aave-plugin": {
+      'hardhat': CUSTOM_NETWORK
+      'localhost': AVALANCHE_MAINNET_NETWORK,
+      'mainnet': AVALANCHE_MAINNET_NETWORK,
+    }
+  },
+  //...
+};
+// ...
 ```
