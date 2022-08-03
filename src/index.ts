@@ -32,11 +32,13 @@ extendConfig(
         ... {
             contractAddressByNetwork: {
                 [AVALANCHE_MAINNET_NETWORK]: {
-                    PoolAddressesProvider: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb'
+                    PoolAddressesProvider: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb',
+                    UiPoolDataProviderV3: '0xdBbFaFC45983B4659E368a3025b81f69Ab6E5093',
                 },
                 [CUSTOM_NETWORK]: {
-                  PoolAddressesProvider: ''
-                }
+                  PoolAddressesProvider: '',
+                  UiPoolDataProviderV3: '',
+              }
             },
         },
         ...userConfig.aave || {},

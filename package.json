@@ -29,8 +29,8 @@
     "README.md"
   ],
   "devDependencies": {
-    "@aave/core-v3": "^1.13.1",
     "@nomiclabs/hardhat-ethers": "^2.1.0",
+    "@sebasgoldberg/hardhat-external": "file:../hardhat-external",
     "@sebasgoldberg/hardhat-network-alias": "^0.0.1",
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",

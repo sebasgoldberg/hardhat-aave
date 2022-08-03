@@ -9,7 +9,6 @@ const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networkAliases: {
     "aave-plugin": {
-      'localhost': AVALANCHE_MAINNET_NETWORK,
       'hardhat': AVALANCHE_MAINNET_NETWORK,
     }
   },

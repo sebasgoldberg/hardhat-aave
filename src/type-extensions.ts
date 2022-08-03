@@ -12,7 +12,8 @@ type NetworkNameTuple = typeof NETWORK_NAMES
 export type NetworkName = NetworkNameTuple[number]
 
 export interface IContractAddresses {
-  PoolAddressesProvider: string
+  PoolAddressesProvider: string,
+  UiPoolDataProviderV3: string
 }
 
 export type ContractAddressesByNetwork = {
