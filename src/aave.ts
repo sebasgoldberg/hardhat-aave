@@ -1,7 +1,8 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { HardhatPluginError } from 'hardhat/plugins';
 import { IContractAddresses, NetworkName, NETWORK_NAMES } from './type-extensions';
-import { AaveOracle, AaveOracle__factory, Pool, PoolAddressesProvider, PoolAddressesProvider__factory, Pool__factory, UiPoolDataProviderV3, UiPoolDataProviderV3__factory } from './typechain-types';
+import { AaveOracle, AaveOracle__factory, AToken, AToken__factory, Pool, PoolAddressesProvider, PoolAddressesProvider__factory, Pool__factory, StableDebtToken, StableDebtToken__factory, UiPoolDataProviderV3, UiPoolDataProviderV3__factory, VariableDebtToken, VariableDebtToken__factory } from './typechain-types';
+import { type } from "os";
 
 export class Aave{
 
@@ -85,5 +86,21 @@ export class Aave{
         }
         return this.pool
     }
-    
+
+    async getReserveTokens(asset: string): Promise<IReservesTokens>{
+
+        const pool = await this.getPool()
+        const { aTokenAddress, variableDebtTokenAddress, stableDebtTokenAddress } = await pool.getReserveData(asset)
+        return {
+            aToken: AToken__factory.connect(aTokenAddress, this.hre.ethers.provider),
+            variableDebtToken: VariableDebtToken__factory.connect(variableDebtTokenAddress, this.hre.ethers.provider),
+            stableDebtToken: StableDebtToken__factory.connect(stableDebtTokenAddress, this.hre.ethers.provider)
+        }
+    }
+}
+
+export interface IReservesTokens {
+    aToken: AToken,
+    variableDebtToken: VariableDebtToken
+    stableDebtToken: StableDebtToken
 }
