@@ -4,12 +4,14 @@ import { IContractAddresses, NetworkName, NETWORK_NAMES } from './type-extension
 import { AaveOracle, AaveOracle__factory, AToken, AToken__factory, Pool, PoolAddressesProvider, PoolAddressesProvider__factory, Pool__factory, StableDebtToken, StableDebtToken__factory, UiPoolDataProviderV3, UiPoolDataProviderV3__factory, VariableDebtToken, VariableDebtToken__factory } from './typechain-types';
 import { type } from "os";
 
+export type InterestRateMode = 1 | 2
+
 export class Aave{
 
     constants = {
         interestRateMode: {
-            Stable: 1,
-            Variable: 2
+            Stable: 1 as InterestRateMode,
+            Variable: 2 as InterestRateMode
         }    
     }
 
