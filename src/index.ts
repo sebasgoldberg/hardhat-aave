@@ -1,5 +1,6 @@
 import '@sebasgoldberg/hardhat-network-alias'
 import "@nomiclabs/hardhat-ethers";
+import '@sebasgoldberg/hardhat-wsprovider'
 
 import { extendConfig, extendEnvironment } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";

@@ -39,7 +39,7 @@ describe("Integration tests examples", function () {
             const AVALANCHE_NODE_URL = "https://api.avax.network/ext/bc/C/rpc";
             const FORK_BLOCKNUMBER = 17628728
 
-            await this.hre.ethers.provider.send(
+            await this.hre.getProvider().send(
                 "hardhat_reset",
                 [
                     {

@@ -49,7 +49,7 @@ export class Aave{
         if (!this.poolAddressesProvider){
             this.poolAddressesProvider = PoolAddressesProvider__factory.connect(
                 this.contractAddresses.PoolAddressesProvider, 
-                this.hre.ethers.provider
+                this.hre.getProvider()
             )
         }
         return this.poolAddressesProvider
@@ -60,7 +60,7 @@ export class Aave{
         if (!this.aaveOracle){
             this.aaveOracle = AaveOracle__factory.connect(
                 await this.getPoolAddressesProvider().getPriceOracle(), 
-                this.hre.ethers.provider
+                this.hre.getProvider()
             )
         }
         return this.aaveOracle
@@ -71,7 +71,7 @@ export class Aave{
         if (!this.uiPoolDataProviderV3){
             this.uiPoolDataProviderV3 = UiPoolDataProviderV3__factory.connect(
                 this.contractAddresses.UiPoolDataProviderV3, 
-                this.hre.ethers.provider
+                this.hre.getProvider()
             )
         }
         return this.uiPoolDataProviderV3
@@ -83,7 +83,7 @@ export class Aave{
             const poolAddress = await (this.getPoolAddressesProvider().getPool())
             this.pool = Pool__factory.connect(
                 poolAddress, 
-                this.hre.ethers.provider
+                this.hre.getProvider()
             )    
         }
         return this.pool
@@ -94,9 +94,9 @@ export class Aave{
         const pool = await this.getPool()
         const { aTokenAddress, variableDebtTokenAddress, stableDebtTokenAddress } = await pool.getReserveData(asset)
         return {
-            aToken: AToken__factory.connect(aTokenAddress, this.hre.ethers.provider),
-            variableDebtToken: VariableDebtToken__factory.connect(variableDebtTokenAddress, this.hre.ethers.provider),
-            stableDebtToken: StableDebtToken__factory.connect(stableDebtTokenAddress, this.hre.ethers.provider)
+            aToken: AToken__factory.connect(aTokenAddress, this.hre.getProvider()),
+            variableDebtToken: VariableDebtToken__factory.connect(variableDebtTokenAddress, this.hre.getProvider()),
+            stableDebtToken: StableDebtToken__factory.connect(stableDebtTokenAddress, this.hre.getProvider())
         }
     }
 }
