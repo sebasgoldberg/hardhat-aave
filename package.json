@@ -1,6 +1,6 @@
 {
   "name": "@sebasgoldberg/hardhat-aave",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Hardhat plugin to use existing contract instances.",
   "repository": "github:sebasgoldberg/hardhat-aave",
   "author": "Sebastian Goldberg",
