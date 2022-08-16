@@ -2,19 +2,18 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { HardhatPluginError } from 'hardhat/plugins';
 import { IContractAddresses, NetworkName, NETWORK_NAMES } from './type-extensions';
 import { AaveOracle, AaveOracle__factory, AToken, AToken__factory, Pool, PoolAddressesProvider, PoolAddressesProvider__factory, Pool__factory, StableDebtToken, StableDebtToken__factory, UiPoolDataProviderV3, UiPoolDataProviderV3__factory, VariableDebtToken, VariableDebtToken__factory } from './typechain-types';
-import { type } from "os";
 
 export type InterestRateMode = 1 | 2
 
-export class Aave{
+export const constants = {
+    interestRateMode: {
+        Stable: 1 as InterestRateMode,
+        Variable: 2 as InterestRateMode
+    },
+    baseDecimalPrecision: 8
+}
 
-    constants = {
-        interestRateMode: {
-            Stable: 1 as InterestRateMode,
-            Variable: 2 as InterestRateMode
-        },
-        baseDecimalPrecision: 8
-    }
+export class Aave{
 
     contractAddresses: IContractAddresses = {
         PoolAddressesProvider: '',
