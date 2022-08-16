@@ -12,7 +12,8 @@ export class Aave{
         interestRateMode: {
             Stable: 1 as InterestRateMode,
             Variable: 2 as InterestRateMode
-        }    
+        },
+        baseDecimalPrecision: 8
     }
 
     contractAddresses: IContractAddresses = {
